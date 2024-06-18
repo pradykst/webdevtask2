@@ -1,6 +1,5 @@
 const health=100
-const playerSpeed=50
-const playerJump=1
+
 let centreX=400
 let centreY=300
 
@@ -17,6 +16,11 @@ class Player{
         this.jumpHeight=10
         this.shouldJump=false
         this.jumpCounter=0
+        this.moveRight=false
+        this.moveLeft=false
+        this.playerSpeed=5
+        this.leftcounter=0
+        this.rightcounter=0
 
     }
 
@@ -40,8 +44,44 @@ class Player{
         }
     }
 
+    fmoveleft(){
+        if(this.moveLeft){
+            this.leftcounter++
+            if(this.leftcounter<11){
+                this.x-=this.playerSpeed
+
+            }
+            if(this.leftcounter>=10){
+                this.moveLeft=false
+            }
+            
+            
+        }
+
+
+
+    }
+
+    fmoveright(){
+        if(this.moveRight){
+            this.rightcounter++
+            if(this.rightcounter<11){
+                this.x+=this.playerSpeed
+    
+            }
+            if(this.rightcounter>=10){
+                this.moveRight=false
+            }
+
+        }
+
+
+    }
+
     draw(){
         this.jump()
+        this.fmoveleft()
+        this.fmoveright()
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x,this.y,this.size/2,this.size);
 
@@ -50,6 +90,18 @@ class Player{
     }
 
 
+
+
+}
+const player=new Player(centreX,centreY,150,'red')
+
+function animate(){
+    requestAnimationFrame(animate)  
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    player.draw()
+
+    
 }
 
 
@@ -74,28 +126,37 @@ function startGame(){
         //leaderboard
     
     //pause and play features
-
-    const player=new Player(centreX,centreY,150,'red')
-
-    function animate(){
-        requestAnimationFrame(animate)  
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        player.draw()
-
-        
-    }
     animate()
 
 
+
+    
     
     addEventListener("keydown", e => {
-        if(e.code === 'Space'){
+        if(e.code === 'KeyW'){
             if(!player.shouldJump){
                 player.jumpCounter = 0;
                 player.shouldJump = true;
 
             }
+        }
+        if(e.code=== 'KeyA'){
+            if(!player.moveLeft){
+                player.leftcounter = 0;
+                player.moveLeft = true;
+
+            }
+
+        }
+        if(e.code=== 'KeyD'){
+            if(!player.moveRight){
+                player.rightcounter = 0;
+                player.moveRight = true;
+
+            }
+            
+            
+            
         }
     });
 
@@ -103,21 +164,7 @@ function startGame(){
 
         
 
-        // if (evt.keyCode == "68") {
-        //     centreX+=playerSpeed
-        //     // alert(centreX)
-        //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-        //     draw();
 
-        
-        // }
-
-        // if (evt.keyCode=='65'){
-        //     centreX-=playerSpeed 
-        //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-        //     draw();
-
-        // }
 
  
 
