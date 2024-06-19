@@ -2,14 +2,19 @@ const health=100
 
 let centreX=400
 let centreY=300
-click=false
+let click=false
 let pos=[0,0]
 let blockArray=[]
 const canvas = document.getElementById("gameboardCanvas");
 const ctx = canvas.getContext("2d");
-goBut=false
+let goBut=false
 let zomXLeft=0
 let zomXRight=800
+let zombieArrayL=[]
+let zombieArrayR=[]
+const maxZombies=5
+
+let zombieTimerid=null
 
 
 function baseLine(){
@@ -169,21 +174,53 @@ class Player{
 }
 const player=new Player(centreX,centreY,150,'red')
 
+
+
+
+function spawnZombies(){
+    if(zombieArrayR.length<=maxZombies){
+        const zombieLeft=new Zombie(zomXLeft,350,100,'white')
+        zombieArrayL.push(zombieLeft)
+        const zombieRight=new Zombie(zomXRight,350,100,'white')
+        zombieArrayR.push(zombieRight)
+
+    }
+
+    else{
+        clearInterval(zombieTimerid)
+    }
+
+
+        
+
+
+}
+
+
+
+
 function zombies(){
     if(goBut){
 
-        const zombieLeft=new Zombie(zomXLeft,350,100,'white')
-        zombieLeft.spawn()
-        zomXLeft+=0.25
+        zombieArrayL.forEach((zombie)=>{
+            zombie.spawn()
+            zombie.x+=0.25
+        }
+          
 
+    )
+        
+        
+        
+        zombieArrayR.forEach((zombie)=>{
+            zombie.spawn()
+            zombie.x-=0.25
+        }
+        
 
-        const zombieRight=new Zombie(zomXRight,350,100,'white')
-        zombieRight.spawn()
-        zomXRight-=0.25
+    )
 
-
-
-
+        
 
 
 
