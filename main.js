@@ -8,7 +8,8 @@ let blockArray=[]
 const canvas = document.getElementById("gameboardCanvas");
 const ctx = canvas.getContext("2d");
 goBut=false
-let zomX=0
+let zomXLeft=0
+let zomXRight=800
 
 
 function baseLine(){
@@ -171,9 +172,17 @@ const player=new Player(centreX,centreY,150,'red')
 function zombies(){
     if(goBut){
 
-        const zombie=new Zombie(zomX,350,100,'white')
-        zombie.spawn()
-        zomX+=0.5
+        const zombieLeft=new Zombie(zomXLeft,350,100,'white')
+        zombieLeft.spawn()
+        zomXLeft+=0.25
+
+
+        const zombieRight=new Zombie(zomXRight,350,100,'white')
+        zombieRight.spawn()
+        zomXRight-=0.25
+
+
+
 
 
 
