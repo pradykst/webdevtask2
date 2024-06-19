@@ -7,6 +7,9 @@ let pos=[0,0]
 let blockArray=[]
 const canvas = document.getElementById("gameboardCanvas");
 const ctx = canvas.getContext("2d");
+goBut=false
+let zomX=0
+
 
 function baseLine(){
     ctx.moveTo(0,450)
@@ -55,6 +58,21 @@ class Block{
     
     }
     
+}
+
+class Zombie{
+    constructor(x,y,size,color){
+        this.x=x
+        this.y=y
+        this.size=size
+        this.color=color
+    }
+
+    spawn(){
+        ctx.fillStyle=this.color
+        ctx.fillRect(this.x,this.y,this.size/3,this.size)
+    }
+
 }
 
 
@@ -150,6 +168,22 @@ class Player{
 }
 const player=new Player(centreX,centreY,150,'red')
 
+function zombies(){
+    if(goBut){
+
+        const zombie=new Zombie(zomX,350,100,'white')
+        zombie.spawn()
+        zomX+=0.5
+
+
+
+
+    }
+
+    
+
+}
+
 function animate(){
     requestAnimationFrame(animate)  
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -161,6 +195,7 @@ function animate(){
     
 
     player.draw()
+    zombies()
     
 
     
@@ -189,6 +224,7 @@ function startGame(){
     
     //pause and play features
     animate()
+    
     
     
 
@@ -229,8 +265,14 @@ function startGame(){
     canvasElem.addEventListener("mousedown", function (e) {
         click=true
         getMousePosition(canvasElem, e);
-        const block=new Block(pos[0],pos[1],50,'blue')
-        blockArray.push(block)
+
+        if(blockArray.length<6){
+            const block=new Block(pos[0],pos[1],50,'blue')
+            blockArray.push(block)
+
+        }
+        document.getElementById('startzombies').style.display='block'
+
 
         
         
