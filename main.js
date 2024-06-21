@@ -17,6 +17,8 @@ let allblocks=false
 let tan=null
 let zombieTimerid=null
 
+blockTouch=false
+
 let aX=0
 let aY=0
 let sX=0
@@ -71,18 +73,29 @@ function mouseMoveHandler(canvas,event) {
 }
 
 class Block{
+    
     constructor(x,y,size,color){
         this.x=x
         this.y=y
         this.size=size
         this.color=color
+        this.active=true
         
     }
     
     show(){
 
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.size, this.size);
+        if(this.active){
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.size, this.size);
+
+        }
+        
+
+
+        
+
+
     
     
     }
@@ -102,6 +115,17 @@ class Zombie{
     spawn(){
         ctx.fillStyle=this.color
         ctx.fillRect(this.x,this.y,this.size/3,this.size)
+
+        blockArray.forEach((block)=>{
+            if(block.y>300){
+                if(this.x+15==block.x+25){
+                    block.active=false
+                }
+                
+
+            }
+
+        })
     }
 
 }
