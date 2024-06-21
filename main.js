@@ -13,6 +13,7 @@ let zomXRight=800
 let zombieArrayL=[]
 let zombieArrayR=[]
 const maxZombies=5
+allblocks=false
 
 let zombieTimerid=null
 
@@ -46,6 +47,14 @@ function getMousePosition(canvas, event) {
 
 }
 
+function mouseMoveHandler(canvas,event) {
+    let rect = canvas.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    console.log(x,y)
+
+ 
+}
 
 class Block{
     constructor(x,y,size,color){
@@ -260,6 +269,15 @@ function animate(){
         blockArray.forEach((block)=>block.show())
 
     }
+
+    if(allblocks){
+        let canvasElem = document.querySelector("canvas");
+        canvasElem.addEventListener("mousemove", function (e) {
+            mouseMoveHandler(canvasElem,e)
+
+        })
+        
+    }
     
 
     player.draw()
@@ -293,6 +311,8 @@ function startGame(){
     
     //pause and play features
     animate()
+
+
     
     
     
@@ -339,6 +359,10 @@ function startGame(){
             const block=new Block(pos[0],pos[1],50,'blue')
             blockArray.push(block)
 
+        }
+        else{
+            allblocks=true
+            console.log('uefa')
         }
         document.getElementById('startzombies').style.display='block'
 
