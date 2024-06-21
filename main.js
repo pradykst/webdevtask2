@@ -1,5 +1,12 @@
-const health=100
 
+
+
+// controls W A D to move up left and right
+// click on the screen to build defense blocks
+//click go to start zombies
+//click again to get direction for bullet shoot
+
+const health=100
 let centreX=400
 let centreY=300
 let click=false
