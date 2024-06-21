@@ -66,6 +66,20 @@ class Block{
     
 }
 
+class Canon{
+    x
+    y
+    constructor(size,color){
+        this.color=color
+        this.size=size
+    }
+
+    draw(){
+        ctx.fillStyle=this.color
+        ct
+    }
+}
+
 class Zombie{
     constructor(x,y,size,color){
         this.x=x
@@ -165,7 +179,15 @@ class Player{
         ctx.fillRect(this.x,this.y,this.size/2,this.size);
 
 
+
+
     
+    }
+
+    life(){
+        ctx.fillstyle="#8ED6FF"
+        ctx.fillRect(this.x-10,this.y-15,95,10)
+        ctx.clearRect(this.x-9.5, this.y-14.5, 70, 9)
     }
 
 
@@ -241,6 +263,7 @@ function animate(){
     
 
     player.draw()
+    player.life() //should call only when zombies hit
     zombies()
     
 
