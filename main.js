@@ -13,9 +13,16 @@ let zomXRight=800
 let zombieArrayL=[]
 let zombieArrayR=[]
 const maxZombies=5
-allblocks=false
-
+let allblocks=false
+let tan=null
 let zombieTimerid=null
+
+let aX=0
+let aY=0
+let sX=0
+let sY=0
+
+
 
 
 function baseLine(){
@@ -49,9 +56,16 @@ function getMousePosition(canvas, event) {
 
 function mouseMoveHandler(canvas,event) {
     let rect = canvas.getBoundingClientRect();
-    let x = event.clientX - rect.left;
-    let y = event.clientY - rect.top;
-    console.log(x,y)
+    aX = event.clientX - rect.left;
+    aY = event.clientY - rect.top;
+    sX=player.x+player.size/4
+    sY=player.y+5
+    console.log(aX,aY)
+    tan=(aY-sY)/(aX-sX)
+    console.log(tan)
+    
+
+
 
  
 }
@@ -75,19 +89,7 @@ class Block{
     
 }
 
-class Canon{
-    x
-    y
-    constructor(size,color){
-        this.color=color
-        this.size=size
-    }
 
-    draw(){
-        ctx.fillStyle=this.color
-        ct
-    }
-}
 
 class Zombie{
     constructor(x,y,size,color){
@@ -194,16 +196,30 @@ class Player{
     }
 
     life(){
-        ctx.fillstyle="#8ED6FF"
+        ctx.fillStyle="#8ED6FF"
         ctx.fillRect(this.x-10,this.y-15,95,10)
         ctx.clearRect(this.x-9.5, this.y-14.5, 70, 9)
     }
+
+    line(){
+        ctx.setLineDash([5, 3])
+        ctx.beginPath();
+        ctx.moveTo(sX, sY);
+        ctx.lineTo(aX, aY);
+        // ctx.lineWidth = 10;
+        // ctx.lineCap = "round"
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+    }
+
+    
 
 
 
 
 }
 const player=new Player(centreX,centreY,150,'red')
+
 
 
 
@@ -282,6 +298,7 @@ function animate(){
 
     player.draw()
     player.life() //should call only when zombies hit
+    player.line()
     zombies()
     
 
@@ -355,7 +372,7 @@ function startGame(){
         click=true
         getMousePosition(canvasElem, e);
 
-        if(blockArray.length<6){
+        if(blockArray.length<2){
             const block=new Block(pos[0],pos[1],50,'blue')
             blockArray.push(block)
 
