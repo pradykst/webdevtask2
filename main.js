@@ -282,7 +282,14 @@ function zombies(){
 
         zombieArrayL.forEach((zombie)=>{
             zombie.spawn()
-            zombie.x+=0.25
+
+            if(zombie.x+33==player.x){
+                zombie.x+=0
+            }
+            else{
+                zombie.x+=0.25
+            }
+            
         }
           
 
@@ -292,7 +299,17 @@ function zombies(){
         
         zombieArrayR.forEach((zombie)=>{
             zombie.spawn()
-            zombie.x-=0.25
+
+            if(zombie.x==player.x+75){
+                zombie.x+=0
+            }
+            else{
+                zombie.x-=0.25
+
+            }
+
+
+            
         }
         
 
