@@ -6,7 +6,7 @@
 //click go to start zombies
 //click again to get direction for bullet shoot
 
-const health=100
+const numBlocks=2
 let centreX=400
 let centreY=300
 let click=false
@@ -14,6 +14,7 @@ let pos=[0,0]
 let blockArray=[]
 const canvas = document.getElementById("gameboardCanvas");
 const ctx = canvas.getContext("2d");
+let canvasElem = document.querySelector("canvas");
 let goBut=false
 let zomXLeft=0
 let zomXRight=800
@@ -23,13 +24,46 @@ const maxZombies=5
 let allblocks=false
 let tan=null
 let zombieTimerid=null
-
-blockTouch=false
-
+let lifeDec=0
+let gameover=false
+let frames
+let blockTouch=false
 let aX=0
 let aY=0
 let sX=0
 let sY=0
+
+function initialiseGame(){
+    
+    centreX=400
+    centreY=300
+    click=true
+    pos=[0,0]
+    blockArray=[]
+    goBut=false
+    zomXLeft=0
+    zomXRight=800
+    zombieArrayL=[]
+    zombieArrayR=[]
+    allblocks=false
+    tan=null
+    zombieTimerid=null
+    lifeDec=0
+    gameover=false
+    frames
+    blockTouch=false
+    aX=0
+    aY=0
+    sX=0
+    sY=0
+
+    canvasElem.removeEventListener("mousemove",mouseMoveHandler)
+    canvasElem.removeEventListener("mousedown",mouseDownHandler)
+
+    startGame()
+
+
+}
 
 
 
@@ -52,8 +86,8 @@ function baseLine(){
 
 
 
-function getMousePosition(canvas, event) {
-    let rect = canvas.getBoundingClientRect();
+function getMousePosition(event) {
+    let rect = canvasElem.getBoundingClientRect();
     let x = event.clientX - rect.left;
     let y = event.clientY - rect.top;
     console.log("Coordinate x: " + x,"Coordinate y: " + y);
@@ -63,8 +97,8 @@ function getMousePosition(canvas, event) {
 
 }
 
-function mouseMoveHandler(canvas,event) {
-    let rect = canvas.getBoundingClientRect();
+function mouseMoveHandler(event) {
+    let rect = canvasElem.getBoundingClientRect();
     aX = event.clientX - rect.left;
     aY = event.clientY - rect.top;
     sX=player.x+player.size/4
@@ -77,6 +111,22 @@ function mouseMoveHandler(canvas,event) {
 
 
  
+}
+
+function mouseDownHandler(e){
+    click=true
+    getMousePosition(e);
+
+    if(blockArray.length<numBlocks){
+        const block=new Block(pos[0],pos[1],50,'blue')
+        blockArray.push(block)
+
+    }
+    else{
+        allblocks=true
+        console.log('uefa')
+    }
+    document.getElementById('startzombies').style.display='block'
 }
 
 class Block{
@@ -229,7 +279,7 @@ class Player{
     life(){
         ctx.fillStyle="#8ED6FF"
         ctx.fillRect(this.x-10,this.y-15,95,10)
-        ctx.clearRect(this.x-9.5, this.y-14.5, 70, 9)
+        ctx.clearRect(this.x-9.5, this.y-14.5,lifeDec, 9)
     }
 
     line(){
@@ -285,6 +335,17 @@ function zombies(){
 
             if(zombie.x+33==player.x){
                 zombie.x+=0
+                
+                // console.log(lifeDec)
+                if(lifeDec<94){
+                    lifeDec+=0.1
+            
+            
+                }
+                else{
+                    gameover=true
+                }
+
             }
             else{
                 zombie.x+=0.25
@@ -302,9 +363,20 @@ function zombies(){
 
             if(zombie.x==player.x+75){
                 zombie.x+=0
+
+                // console.log(lifeDec)
+                if(lifeDec<94){
+                    lifeDec+=0.1
+            
+            
+                }
+                else{
+                    gameover=true
+                }
             }
             else{
                 zombie.x-=0.25
+
 
             }
 
@@ -326,28 +398,35 @@ function zombies(){
 }
 
 function animate(){
-    requestAnimationFrame(animate)  
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    baseLine()
-    if(click){
-        blockArray.forEach((block)=>block.show())
-
-    }
-
-    if(allblocks){
-        let canvasElem = document.querySelector("canvas");
-        canvasElem.addEventListener("mousemove", function (e) {
-            mouseMoveHandler(canvasElem,e)
-
-        })
-        
-    }
+    if(!gameover){
+        frames=requestAnimationFrame(animate)  
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        baseLine()
+        if(click){
+            blockArray.forEach((block)=>block.show())
     
+        }
+    
+        if(allblocks){
+            
+            canvasElem.addEventListener("mousemove", mouseMoveHandler)
+            
+        }
+        
+    
+        player.draw()
+        player.life() //should call only when zombies hit
+        player.line()
+        zombies()
 
-    player.draw()
-    player.life() //should call only when zombies hit
-    player.line()
-    zombies()
+    }
+    else{
+        alert("GAME OVER !!")
+        cancelAnimationFrame(frames)
+        initialiseGame()
+    }
+
+
     
 
     
@@ -375,7 +454,12 @@ function startGame(){
         //leaderboard
     
     //pause and play features
+
+    
     animate()
+
+
+
 
 
     
@@ -415,43 +499,7 @@ function startGame(){
     });
 
 
-    let canvasElem = document.querySelector("canvas");
-    canvasElem.addEventListener("mousedown", function (e) {
-        click=true
-        getMousePosition(canvasElem, e);
-
-        if(blockArray.length<2){
-            const block=new Block(pos[0],pos[1],50,'blue')
-            blockArray.push(block)
-
-        }
-        else{
-            allblocks=true
-            console.log('uefa')
-        }
-        document.getElementById('startzombies').style.display='block'
-
-
-        
-        
-
-    }
-); 
-
-
-
-        
-
-
-
- 
-
-
-
-            
-        
-        
-        
+    canvasElem.addEventListener("mousedown", mouseDownHandler); 
 
     
 }
