@@ -34,6 +34,7 @@ let aY = 0
 let sX = 0
 let sY = 0
 let deathCounter=0
+let pause=false
 
 
 let bombX = 0;
@@ -68,6 +69,7 @@ function initialiseGame() {
     sX = 0
     sY = 0
     deathCounter=0
+    pause=false
 
     canvasElem.removeEventListener("mousemove", mouseMoveHandler)
     canvasElem.removeEventListener("mousedown", mouseDownHandler)
@@ -153,8 +155,10 @@ function mouseDownHandler(e) {
     else {
         allblocks = true
         console.log('uefa')
+        document.getElementById('startzombies').style.display = 'block'
+        document.getElementById('pause').style.display='block'
     }
-    document.getElementById('startzombies').style.display = 'block'
+
 }
 
 class Block {
@@ -463,29 +467,31 @@ function zombies() {
 
 function animate() {
     if (!gameover) {
-        frames = requestAnimationFrame(animate)
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        baseLine()
-        if (click) {
-            blockArray.forEach((block) => block.show())
+            frames = requestAnimationFrame(animate)
+            if(!pause){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            baseLine()
+            if (click) {
+                blockArray.forEach((block) => block.show())
 
+            }
+
+            if (allblocks) {
+
+                canvasElem.addEventListener("mousemove", mouseMoveHandler)
+
+            }
+
+
+            player.draw()
+            player.life() 
+            player.line()
+            player.score()
+            player.health()
+            zombies()
+
+            bombProjectile()
         }
-
-        if (allblocks) {
-
-            canvasElem.addEventListener("mousemove", mouseMoveHandler)
-
-        }
-
-
-        player.draw()
-        player.life() 
-        player.line()
-        player.score()
-        player.health()
-        zombies()
-
-        bombProjectile()
 
     }
     else {
