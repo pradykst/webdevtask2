@@ -12,13 +12,42 @@
 <body>
 
     <button id="startGame" onclick="startGame()">Start</button>
-    <button id="startzombies" onclick="goBut=true;zombieTimerid=setInterval(spawnZombies,1500)" hidden>GO</button>
-    <button id="pause" onclick="pause=true;document.getElementById('play').style.display='block';document.getElementById('pause').style.display='none'" hidden>Pause</button>
-    <button id="play" onclick="pause=false;document.getElementById('pause').style.display='block';document.getElementById('play').style.display='none'" hidden>Play</button>
-
-
+   
+    <div class="container">
+        <button class='button' id="startzombies" onclick="goBut=true;zombieTimerid=setInterval(spawnZombies,1500)" hidden>GO</button>
+        <button class='button' id="pause" onclick="pause=true;document.getElementById('play').style.display='block';document.getElementById('pause').style.display='none'" hidden>Pause</button>
+        <button class='button' id="play" onclick="pause=false;document.getElementById('pause').style.display='block';document.getElementById('play').style.display='none'" hidden>Play</button>
+    
+    
+    </div>
     <!-- flexible canvas size -->
-    <canvas id="gameboardCanvas" width='800' height='600'></canvas> 
+     <div class="container"> 
+        <p class="paragraph">
+            <canvas id="gameboardCanvas" width='800' height='600'></canvas>
+
+        </p>
+        <p class="paragraph rules" >
+            INSTRUCTONS!<br/>
+            <span style="font-size: 20px;"> 
+                Click on the Start button to start the game.<br/>
+                Click on the screen to set up defence blocks.<br/>
+                Once all the blocks are setup(6) click on the screen once to initialise game.<br/>
+                Click on the go button to let the zombies come.<br/>
+                Direct your mouse and press space to shoot bullets only one at a time.<br/>
+                Kill the zombies. <br/>
+                Escape from them or else you might loose your life and if all health is lost you loose the game.<br/>
+                All the Best! Start Playing<br/>
+                
+                
+                
+
+
+            </span>
+        </p>
+
+     
+     </div>
+    
 
     <script src='main.js'></script>
 

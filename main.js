@@ -6,7 +6,7 @@
 //click go to start zombies
 //click again to get direction for bullet shoot
 
-const numBlocks = 2
+const numBlocks = 6
 let centreX = 400
 let centreY = 300
 let click = false
