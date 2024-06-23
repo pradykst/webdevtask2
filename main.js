@@ -175,8 +175,9 @@ class Block {
     show() {
 
         if (this.active) {
-            ctx.fillStyle = this.color;
-            ctx.fillRect(this.x, this.y, this.size, this.size);
+            // ctx.fillStyle = this.color;
+            // ctx.fillRect(this.x, this.y, this.size, this.size);
+            ctx.drawImage(document.getElementById('block'), this.x, this.y, this.size, this.size)
 
         }
 
@@ -204,8 +205,9 @@ class Zombie {
 
     spawn() {
         if(this.active){
-            ctx.fillStyle = this.color
-            ctx.fillRect(this.x, this.y, this.size / 3, this.size)
+            // ctx.fillStyle = this.color
+            // ctx.fillRect(this.x, this.y, this.size / 3, this.size)
+            ctx.drawImage(document.getElementById('zombie'), this.x, this.y, this.size/3, this.size)
             if((bombX<=this.x+33 && bombX>=this.x)&&(bombY>=this.y && bombY<=this.y+100)){
                 console.log('zombie hit')
                 deathCounter++
@@ -311,8 +313,10 @@ class Player {
         this.jump()
         this.fmoveleft()
         this.fmoveright()
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.size / 2, this.size);
+        // ctx.fillStyle = this.color;
+        // ctx.fillRect(this.x, this.y, this.size / 2, this.size);
+        ctx.drawImage(document.getElementById('player'), this.x, this.y, this.size/2, this.size)
+
 
 
 
@@ -605,7 +609,7 @@ function bombProjectile() {
 
         bombVY += 0.1;
 
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = 'yellow';
         ctx.beginPath();
         ctx.arc(bombX, bombY, 10, 0, Math.PI * 2);
         ctx.fill();
