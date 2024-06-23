@@ -23,6 +23,7 @@ let zombieArrayR=[]
 const maxZombies=5
 let allblocks=false
 let tan=null
+let angle=null
 let zombieTimerid=null
 let lifeDec=0
 let gameover=false
@@ -32,6 +33,24 @@ let aX=0
 let aY=0
 let sX=0
 let sY=0
+
+//for the projectile bomb
+// Tower position
+const towerX = 50;
+const towerY = canvas.height - 100;
+
+// Target position
+let targetX = canvas.width - 100;
+let targetY = canvas.height - 50;
+
+// Bomb position and velocity
+let bombX = towerX + 20;
+let bombY = towerY;
+let bombVX = 0;
+let bombVY = 0;
+
+// Flag to indicate if bomb is fired
+let bombFired = false;
 
 function initialiseGame(){
     
@@ -59,6 +78,8 @@ function initialiseGame(){
 
     canvasElem.removeEventListener("mousemove",mouseMoveHandler)
     canvasElem.removeEventListener("mousedown",mouseDownHandler)
+
+    resetBomb()
 
     startGame()
 
@@ -106,6 +127,9 @@ function mouseMoveHandler(event) {
     console.log(aX,aY)
     tan=(aY-sY)/(aX-sX)
     console.log(tan)
+
+    // angle = Math.atan2(mouseY - towerY, mouseX - towerX);
+    angle = Math.atan(tan);
     
 
 
@@ -419,6 +443,8 @@ function animate(){
         player.line()
         zombies()
 
+        bombProjectile()
+
     }
     else{
         alert("GAME OVER !!")
@@ -496,6 +522,9 @@ function startGame(){
             
             
         }
+        if(e.code === 'Space'){
+            handleFire(e);
+        }
     });
 
 
@@ -504,18 +533,69 @@ function startGame(){
     
 }
 
+        // Function to update the game state
+        function bombProjectile() {
+            // Draw the tower
+            ctx.fillStyle = 'gray';
+            ctx.fillRect(towerX, towerY, 40, 100);
 
+            // Draw the target
+            ctx.fillStyle = 'red';
+            ctx.fillRect(targetX, targetY, 50, 50);
 
+            // Draw the bomb if fired
+            if (bombFired) {
+                // Update bomb position
+                bombX += bombVX;
+                bombY += bombVY;
 
-    
+                // Apply gravity to the bomb
+                bombVY += 0.1;
 
-    
-      
+                // Draw the bomb
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(bombX, bombY, 10, 0, Math.PI * 2);
+                ctx.fill();
 
+                // Check if the bomb hits the target
+                if (bombY >= targetY && bombX >= targetX && bombX <= targetX + 50) {
+                    resetBomb()
+                    // Bomb hit the target
+                    // alert('Target hit!');
+                    // resetGame();
+                }
 
+                // Check if the bomb goes out of bounds
+                if (bombY > canvas.height) {
+                    resetBomb();
+                    // Bomb missed the target
+                    // alert('Missed!');
+                    // resetGame();
+                }
+            }
+        }
 
-      
+        // Function to handle mouse click event
+        function handleFire(event) {
+            if (!bombFired) {
+                // Calculate the velocity based on mouse position
+                // const mouseX = event.clientX - canvas.offsetLeft;
+                // const mouseY = event.clientY - canvas.offsetTop;
+                // const angle = Math.atan2(mouseY - towerY, mouseX - towerX);
+                const speed = 8;
+                bombVX = Math.cos(angle) * speed;
+                bombVY = Math.sin(angle) * speed;
 
+                // Set the bomb as fired
+                bombFired = true;
+            }
+        }
 
-
-
+        function resetBomb(){
+            bombFired = false;
+            bombX = towerX + 20;
+            bombY = towerY;
+            bombVX = 0;
+            bombVY = 0;
+        }
