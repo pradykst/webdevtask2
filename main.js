@@ -394,25 +394,29 @@ function zombies() {
 
         zombieArrayL.forEach((zombie) => {
             zombie.spawn()
+            if(zombie.active){
+                
+                if (zombie.x + 33 == player.x) {
+                    zombie.x += 0
+
+                    // console.log(lifeDec)
+                    if (lifeDec < 94) {
+                        lifeDec += 0.1
 
 
-            if (zombie.x + 33 == player.x) {
-                zombie.x += 0
-
-                // console.log(lifeDec)
-                if (lifeDec < 94) {
-                    lifeDec += 0.1
-
+                    }
+                    else {
+                        gameover = true
+                    }
 
                 }
                 else {
-                    gameover = true
+                    zombie.x += 0.25
                 }
 
             }
-            else {
-                zombie.x += 0.25
-            }
+
+
 
         }
 
@@ -423,30 +427,31 @@ function zombies() {
 
         zombieArrayR.forEach((zombie) => {
             zombie.spawn()
-            if(zombie.x==bombX&&bombY>zombie.y){
-                zombie.active=false
-                resetBomb()
 
-            }
-
-            if (zombie.x == player.x + 75) {
-                zombie.x += 0
-
-                // console.log(lifeDec)
-                if (lifeDec < 94) {
-                    lifeDec += 0.1
-
-
+            if(zombie.active){
+                if (zombie.x == player.x + 75) {
+                    zombie.x += 0
+    
+                    // console.log(lifeDec)
+                    if (lifeDec < 94) {
+                        lifeDec += 0.1
+    
+    
+                    }
+                    else {
+                        gameover = true
+                    }
                 }
                 else {
-                    gameover = true
+                    zombie.x -= 0.25
+    
+    
                 }
-            }
-            else {
-                zombie.x -= 0.25
-
 
             }
+
+
+
 
 
 
