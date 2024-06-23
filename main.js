@@ -33,23 +33,15 @@ let aX = 0
 let aY = 0
 let sX = 0
 let sY = 0
+let deathCounter=0
 
-//for the projectile bomb
-// Tower position
-// const towerX = 50;
-// const towerY = canvas.height - 100;
 
-// // Target position
-// let targetX = canvas.width - 100;
-// let targetY = canvas.height - 50;
-
-// Bomb position and velocity
 let bombX = 0;
 let bombY = 0;
 let bombVX = 0;
 let bombVY = 0;
 
-// Flag to indicate if bomb is fired
+
 let bombFired = false;
 
 function initialiseGame() {
@@ -75,6 +67,7 @@ function initialiseGame() {
     aY = 0
     sX = 0
     sY = 0
+    deathCounter=0
 
     canvasElem.removeEventListener("mousemove", mouseMoveHandler)
     canvasElem.removeEventListener("mousedown", mouseDownHandler)
@@ -202,22 +195,34 @@ class Zombie {
         this.y = y
         this.size = size
         this.color = color
+        this.active = true
     }
 
     spawn() {
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.size / 3, this.size)
+        if(this.active){
+            ctx.fillStyle = this.color
+            ctx.fillRect(this.x, this.y, this.size / 3, this.size)
+            if((bombX<=this.x+33 && bombX>=this.x)&&(bombY>=this.y && bombY<=this.y+100)){
+                console.log('zombie hit')
+                deathCounter++
+                this.active=false
 
-        blockArray.forEach((block) => {
-            if (block.y > 300) {
-                if (this.x + 15 == block.x + 25) {
-                    block.active = false
-                }
-
+                resetBomb()
 
             }
 
-        })
+
+            blockArray.forEach((block) => {
+                if (block.y > 300) {
+                    if (this.x + 15 == block.x + 25) {
+                        block.active = false
+                    }
+
+
+                }
+
+            })
+        }
     }
 
 }
@@ -328,6 +333,23 @@ class Player {
         ctx.strokeStyle = "white";
         ctx.stroke();
     }
+    score(){
+        if(goBut){
+            ctx.font = "20px Arial";
+            ctx.fillText("Score: "+deathCounter,675,50);
+
+        }
+
+
+    }
+    health(){
+        if(goBut){
+            ctx.font = "20px Arial";
+            ctx.fillText("Health: "+Math.trunc(100-lifeDec) ,675,70);
+
+        }
+
+    }
 
 
 
@@ -369,6 +391,7 @@ function zombies() {
         zombieArrayL.forEach((zombie) => {
             zombie.spawn()
 
+
             if (zombie.x + 33 == player.x) {
                 zombie.x += 0
 
@@ -396,6 +419,11 @@ function zombies() {
 
         zombieArrayR.forEach((zombie) => {
             zombie.spawn()
+            if(zombie.x==bombX&&bombY>zombie.y){
+                zombie.active=false
+                resetBomb()
+
+            }
 
             if (zombie.x == player.x + 75) {
                 zombie.x += 0
@@ -453,6 +481,8 @@ function animate() {
         player.draw()
         player.life() 
         player.line()
+        player.score()
+        player.health()
         zombies()
 
         bombProjectile()
