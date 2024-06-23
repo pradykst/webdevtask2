@@ -212,6 +212,13 @@ class Zombie {
                 console.log('zombie hit')
                 deathCounter++
                 this.active=false
+                if(deathCounter==2*(maxZombies)){
+                    alert("YOU SURVIVED THE APOCALYPSE !!")
+                    location.reload()
+                    cancelAnimationFrame(frames)
+                    initialiseGame()
+            
+                }
 
                 resetBomb()
 
@@ -372,7 +379,7 @@ const player = new Player(centreX, centreY, 150, 'red')
 
 
 function spawnZombies() {
-    if (zombieArrayR.length <= maxZombies) {
+    if (zombieArrayR.length < maxZombies) {
         const zombieLeft = new Zombie(zomXLeft, 350, 100, 'white')
         zombieArrayL.push(zombieLeft)
         const zombieRight = new Zombie(zomXRight, 350, 100, 'white')
@@ -476,35 +483,40 @@ function zombies() {
 
 function animate() {
     if (!gameover) {
-            frames = requestAnimationFrame(animate)
-            if(!pause){
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            baseLine()
-            if (click) {
-                blockArray.forEach((block) => block.show())
+        frames = requestAnimationFrame(animate)
+        if(!pause){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        baseLine()
+        if (click) {
+            blockArray.forEach((block) => block.show())
 
-            }
+        }
 
-            if (allblocks) {
+        if (allblocks) {
 
-                canvasElem.addEventListener("mousemove", mouseMoveHandler)
+            canvasElem.addEventListener("mousemove", mouseMoveHandler)
 
-            }
+        }
 
 
-            player.draw()
-            player.life() 
-            player.line()
-            player.score()
-            player.health()
-            zombies()
+        player.draw()
+        player.life() 
+        player.line()
+        player.score()
+        player.health()
+        zombies()
 
-            bombProjectile()
+        bombProjectile()
+        
+            
+
         }
 
     }
+
     else {
         alert("GAME OVER !!")
+        location.reload()
         cancelAnimationFrame(frames)
         initialiseGame()
     }
